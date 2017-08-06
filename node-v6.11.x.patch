@@ -1,0 +1,19 @@
+diff -ruN node-v6.11.1/deps/v8/src/base/cpu.cc node-v6.11.1_new/deps/v8/src/base/cpu.cc
+--- a/deps/v8/src/base/cpu.cc	2017-08-01 13:39:09.000000000 +0800
++++ b/deps/v8/src/base/cpu.cc	2017-08-06 17:57:45.939178900 +0800
+@@ -139,6 +139,7 @@
+ int __detect_fp64_mode(void) {
+   double result = 0;
+   // Bit representation of (double)1 is 0x3FF0000000000000.
++#if !__mips_soft_float
+   __asm__ volatile(
+       ".set push\n\t"
+       ".set noreorder\n\t"
+@@ -151,6 +152,7 @@
+       : "+m"(result)
+       :
+       : "t0", "$f0", "$f1", "memory");
++#endif
+ 
+   return !(result == 1);
+ }

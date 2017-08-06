@@ -1,0 +1,18 @@
+--- node-v8.2.1/deps/v8/src/base/cpu.cc	2017-07-21 05:28:21.000000000 +0800
++++ cpu.cc	2017-08-06 18:20:13.290435500 +0800
+@@ -140,6 +140,7 @@
+ int __detect_fp64_mode(void) {
+   double result = 0;
+   // Bit representation of (double)1 is 0x3FF0000000000000.
++#if !__mips_soft_float
+   __asm__ volatile(
+       ".set push\n\t"
+       ".set noreorder\n\t"
+@@ -152,6 +153,7 @@
+       : "+m"(result)
+       :
+       : "t0", "$f0", "$f1", "memory");
++#endif
+ 
+   return !(result == 1);
+ }
